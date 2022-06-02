@@ -1,0 +1,22 @@
+@import "../../../scss/index.scss";
+
+.card-container{
+    background-color: #16003B;
+    height: 100%;
+    width: 50%;
+    margin-left: 25%;
+    border-radius: 10px;
+    border-color: #05cddb;
+    box-shadow: 4px 4px 10px #999;
+    padding: 10px 10px;
+    
+
+}
+
+.tab{
+    border-radius: 50px;
+    color: rgb(255, 0, 13);
+    background-color: aquamarine;
+    border:solid;
+    border-color: #05cddb;
+}

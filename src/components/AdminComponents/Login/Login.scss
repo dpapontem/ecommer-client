@@ -1,0 +1,19 @@
+@import "../../../../src/scss/index.scss";
+
+.login-form{
+    background-color: aliceblue;
+    padding: 75px 50px;
+    border-radius: 10px;
+}
+
+
+.s {
+    width: 100%;    
+    text-align: center;
+    
+  }
+
+.login-form-button{
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgb(123, 139, 138);
+}
