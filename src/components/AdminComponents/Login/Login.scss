@@ -1,19 +1,43 @@
-@import "../../../../src/scss/index.scss";
+@import "../../../scss/index.scss";
 
-.login-form{
-    background-color: aliceblue;
-    padding: 75px 50px;
-    border-radius: 10px;
-}
-
-
-.s {
-    width: 100%;    
-    text-align: center;
-    
+.login-form {
+  .ant-form-item:last-of-type {
+    margin: 0;
   }
 
-.login-form-button{
-    border-radius: 10px;
-    box-shadow: 5px 5px 5px rgb(123, 139, 138);
+  &__input {
+    .ant-input-prefix {
+      i {
+        font-size: 0em + 13px / $defaultFontSize;
+      }
+    }
+
+    input {
+      font-size: 0em + 13px / $defaultFontSize;
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: none;
+      }
+    }
+  }
+
+  &__button {
+    width: 100%;
+    font-size: 0em + 16px / $defaultFontSize;
+    background-color: $primary-color;
+    color: $font-light;
+    height: 30px;
+    margin-top: 20px;
+
+    &:hover {
+      background-color: $primary-color-hover;
+      color: $font-light;
+    }
+    &:focus,
+    &:active {
+      background-color: $primary-color;
+      color: $font-light;
+      border: 0;
+    }
+  }
 }

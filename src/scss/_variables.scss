@@ -1,6 +1,7 @@
 $defultFontSize: 16px;
 $primary-color: #0e5c7a;
 $primary-color-hover: #063c51;
+$defaultFontSize: 16px;
 
 $menu_color: #252527;
 
@@ -24,10 +25,17 @@ $background-grey: #808080;
 $background-grey-dark: #595959;
 $background-dark-ligth: #252527;
 $background-dark: #000;
+$background-success: #84b84c1f;
+$background-error: #ff00001f;
 
 $success: #84b84c;
 $error: #f00;
 
+// Social Color
+$youtube: #cd201f;
+$twitter: #1da1f2;
+$facebook: #3b5998;
+$linkedin: #0077b5;
 /* Breakpoints estandarizados:
 
 Móviles: entre 320 y 480 píxeles.
@@ -45,5 +53,5 @@ $media-breackpoint-up-sm: 576px;
 $media-breackpoint-up-md: 768px;
 $media-breackpoint-up-lg: 992px;
 $media-breackpoint-up-xl: 1200px;
-$background-success:#84b84c1f;
-$background-error:#ff00001f;
+
+

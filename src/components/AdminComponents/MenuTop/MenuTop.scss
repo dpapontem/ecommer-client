@@ -3,14 +3,14 @@
 .menu-top {
   display: flex;
   button {
-    color: #05cddb;
+    color: $font-grey-dark;
 
     &:hover {
-      color: $primary_color-hover;
+      color: $primary-color-hover;
     }
     &:focus,
     &:active {
-      color: #05cddb;
+      color: $primary-color;
     }
   }
 
