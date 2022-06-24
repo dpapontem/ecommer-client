@@ -10,7 +10,7 @@
     display: flex;
     padding: 0;
     height: 65px;
-    background-color: aliceblue;
+    background-color: #040303;
   }
 
   &__content {
@@ -18,12 +18,20 @@
     padding: 90px 25px 25px 25px;
   }
 
-  &__footer {
+  &__footer  {
     text-align: center;
     font-family: sans-serif;
+    color: #05cddb;
     width: 100%;
     bottom: 0;
     position: fixed;
-    background-color: aliceblue;
+    background-color: #040303;
+    
+  }
+
+  a {
+    color: #05cddb;
+    text-decoration: none;
   }
 }
+

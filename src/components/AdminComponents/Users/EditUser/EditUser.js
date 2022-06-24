@@ -13,7 +13,7 @@ import {
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useDropzone } from "react-dropzone";
 import NoAvatar from "../../../../assets/img/png/user.png";
-import { uploadAvatar, getAvatar } from "../../../../api/user";
+import { uploadAvatar, getAvatar, updateUsers} from "../../../../api/user";
 import { getAccessToken } from "../../../../api/auth";
 
 import "./EditUser.scss";
@@ -21,7 +21,14 @@ import "./EditUser.scss";
 export default function EditUserForm(props) {
   const { user, setIsVisibleModal, setReloadUsers } = props;
   const [avatar, setAvatar] = useState(null);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState ({
+    name: user.name,
+    lastname: user.lastname,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    status: user.status,
+    avatar: user.avatar,
+  });
 
   useEffect(() => {
     setUserData({
@@ -50,21 +57,11 @@ export default function EditUserForm(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [avatar]);
 
-  const updateUser = () => {
+ const updateUser = () => {
     const token = getAccessToken();
+    console.log(userData);
+    
     let userUpdate = userData;
-
-    if (userUpdate.password || userUpdate.repeatPassword) {
-      if (userUpdate.password !== userUpdate.repeatPassword) {
-        notification["error"]({
-          message:
-            "Passwords must match. Las contraseñas tienen que ser iguales."
-        });
-        return;
-      } else {
-        delete userUpdate.repeatPassword;
-      }
-    }
 
     if (!userUpdate.name_user || !userUpdate.lastname || !userUpdate.email) {
       notification["error"]({
@@ -77,7 +74,7 @@ export default function EditUserForm(props) {
     if (typeof userUpdate.avatar === "object") {
       uploadAvatar(token, userUpdate.avatar, user._id).then(response => {
         userUpdate.avatar = response.avatarName;
-        updateUser(token, userUpdate, user._id).then(result => {
+        updateUsers(token, userUpdate, user._id).then(result => {
           notification["success"]({
             message: result.message
           });
@@ -86,7 +83,7 @@ export default function EditUserForm(props) {
         });
       });
     } else {
-      updateUser(token, userUpdate, user._id).then(result => {
+      updateUsers(token, userUpdate, user._id).then(result => {
         notification["success"]({
           message: result.message
         });
@@ -94,7 +91,14 @@ export default function EditUserForm(props) {
         setReloadUsers(true);
       });
     }
-  };
+  }; 
+  useEffect (
+    () => {
+      console.log (user);
+    },
+    [user]
+  );
+ 
 
   return (
     <div className="edit-user-form">
@@ -133,7 +137,7 @@ function UploadAvatar(props) {
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: "image/jpeg, image/png",
+    accept: "image/jpg, image/png",
     noKeyboard: true,
     onDrop
   });
@@ -153,9 +157,9 @@ function UploadAvatar(props) {
 function EditForm(props) {
   const { userData, setUserData, updateUser } = props;
   const { Option } = Select;
-
+  const [form] = Form.useForm ()
   return (
-    <Form className="form-edit" onFinish={updateUser}>
+    <Form className="form-edit" onFinish={updateUser} form={form}  >
       <Row gutter={24}>
         <Col span={12}>
           <Form.Item>
@@ -214,8 +218,8 @@ function EditForm(props) {
         <Col span={24}>
           <Form.Item label="Active">
             <Switch
-              checkedChildren="Active"
-              unCheckedChildren="Inactive"
+              checkedChildren="active"
+              unCheckedChildren="inactive"
               checked={userData.active}
             />
           </Form.Item>

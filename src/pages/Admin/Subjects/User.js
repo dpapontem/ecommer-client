@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./User.scss";
-import { getActiveUsers } from "../../../api/user";
+import { getActiveSubjects } from "../../../api/subject";
 import { getAccessToken } from "../../../api/auth";
-import ListUsers from "../../../components/AdminComponents/Users/ListUsers/ListUsers";
+import ListSubjects from "../../../components/AdminComponents/Subject/ListSubject/ListSubject";
 
-export default function Users() {
-  const [usersActive, setUsersActive] = useState([]);
-  const [usersInactive, setUsersInactive] = useState([]);
-  const [reloadUsers, setReloadUsers] = useState(false);
+export default function Subjects() {
+  const [subjectsActive, setSubjectsActive] = useState([]);
+  const [subjectsInactive, setSubjectsInactive] = useState([]);
+  const [reloadsubjects, setReloadSubjects] = useState(false);
   const token = getAccessToken();
 
   useEffect(() => {
-    getActiveUsers(token, true).then((response) => {
-      setUsersActive(response.users);
+    getActiveSubjects(token, true).then((response) => {
+      setSubjectsActive(response.subjects);
     });
-    getActiveUsers(token, false).then((response) => {
-      setUsersInactive(response.users);
+    getActiveSubjects(token, false).then((response) => {
+      setSubjectsInactive(response.subjects);
     });
-    setReloadUsers(false);
-  }, [token, reloadUsers]);
+    setReloadSubjects(false);
+  }, [token, reloadsubjects]);
 
   return (
     <div>
-      <ListUsers
-        usersActive={usersActive}
-        usersInactive={usersInactive}
-        setReloadUsers={setReloadUsers}
+      <ListSubjects
+        subjectsActive={subjectsActive}
+        subjectsctive={subjectsInactive}
+        setReloadSubjects={setReloadSubjects}
       />
     </div>
   );

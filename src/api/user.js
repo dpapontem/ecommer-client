@@ -1,6 +1,8 @@
 import { basePath, apiVersion } from "./config";
 
 export function signUpApi(data) {
+
+  
   const url = `${basePath}/${apiVersion}/signup`;
   /*  http://localhost:3977/api/v1/signup  */
   console.log(url);
@@ -140,7 +142,7 @@ export function activateUser(token, userId, status) {
     });
 }
 
-export function updateUser(token, user, userId) {
+export function updateUsers(token, user, userId) {
   const url = `${basePath}/${apiVersion}/updateuser/${userId}`;
 
   const params = {

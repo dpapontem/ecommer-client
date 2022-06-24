@@ -9,34 +9,36 @@ import {
 } from "antd";
 import {
   EditOutlined,
-  UserDeleteOutlined,
-  UserSwitchOutlined,
-  UserAddOutlined,
+  DeleteOutlined,
+  FolderOutlined,
+  FolderAddOutlined ,
 } from "@ant-design/icons";
 import NoAvatar from "../../../../assets/img/png/user.png";
-import { getAvatar, activateUser, deleteUser } from "../../../../api/user";
+import { activateSubject, deletSubject } from "../../../../api/subject";
 import { getAccessToken } from "../../../../api/auth";
-import EditUserForm from "../EditUser";
-import AddUserForm from "../AddUser";
+import EditSubjectForm from "../EditSubject";
+import AddSubjectForm from "../AddSubject";
 import Modal from "../../../Modal";
+import { getAvatar} from "../../../../api/user";
 
 const { confirm } = ModalAntd;
 
-export default function ListUsers(props) {
-  /* page user */
-  const { usersActive, usersInactive, setReloadUsers } = props;
-  const [viewUsersActives, setViewUsersActives] = useState(true);
+export default function ListSubjects(props) {
+  /* page subject */
+  const { subjectsActive, subjectsInactive, setReloadSubjects } = props;
+  const [viewSubjectsActives, setViewSubjectsActives] = useState(true);
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState(null);
 
-  const addUserModal = () => {
+  const addSubjectModal = () => {
     setIsVisibleModal(true);
-    setModalTitle("Creando nuevo usuario");
+    setModalTitle("Creando nueva asignatura");
+    console.log("Porque no funciona")
     setModalContent(
-      <AddUserForm
+      <AddSubjectForm
         setIsVisibleModal={setIsVisibleModal}
-        setReloadUsers={setReloadUsers}
+        setReloadSubjects={setReloadSubjects}
       />
     );
   };
@@ -47,21 +49,21 @@ export default function ListUsers(props) {
         <div className="list-users__header-switch">
           <List.Item
             actions={[
-              <Button type="primary" onClick={addUserModal} style={{borderRadius: 15,}}>
-                <UserAddOutlined />
+              <Button type="primary" onClick={addSubjectModal} style={{borderRadius: 15,}}>
+                <FolderAddOutlined  />
               </Button>,
             ]}
           >
             <List.Item.Meta
               title={
                 <span>
-                  {viewUsersActives ? "Usuarios Activos" : "Usuarios Inactivos"}
+                  {viewSubjectsActives ? "Activos" : "Inactivos"}
                 </span>
               }
               avatar={
                 <Switch
                   defaultChecked
-                  onChange={() => setViewUsersActives(!viewUsersActives)}
+                  onChange={() => setViewSubjectsActives(!viewSubjectsActives)}
                 />
               }
             ></List.Item.Meta>
@@ -69,18 +71,18 @@ export default function ListUsers(props) {
         </div>
       </div>
 
-      {viewUsersActives ? (
-        <UsersActive
-          usersActive={usersActive}
+      {viewSubjectsActives ? (
+        <SubjectsActive
+          subjectsActive={subjectsActive}
           setIsVisibleModal={setIsVisibleModal}
           setModalTitle={setModalTitle}
           setModalContent={setModalContent}
-          setReloadUsers={setReloadUsers}
+          setReloadSubjects={setReloadSubjects}
         />
       ) : (
-        <UsersInactive
-          usersInactive={usersInactive}
-          setReloadUsers={setReloadUsers}
+        <SubjectsInactive
+          subjectsInactive={subjectsInactive}
+          setReloadSubjects={setReloadSubjects}
         />
       )}
 
@@ -95,27 +97,27 @@ export default function ListUsers(props) {
   );
 }
 
-function UsersActive(props) {
+function SubjectsActive(props) {
   const {
-    usersActive,
+    subjectsActive,
     setIsVisibleModal,
     setModalTitle,
     setModalContent,
-    setReloadUsers,
+    setReloadSubjects,
   } = props;
 
-  const editUser = (user) => {
+  const editSubject = (subject) => {
     setIsVisibleModal(true);
     setModalTitle(
-      `Editar ${user.name_user ? user.name_user : "..."} ${
-        user.lastname ? user.lastname : "..."
+      `Editar ${subject.academic_activity ? subject.academic_activity : "..."} ${
+        subject.activity_code ? subject.activity_code : "..."
       }`
     );
     setModalContent(
-      <EditUserForm
-        user={user}
+      <EditSubjectForm
+        subject={subject}
         setIsVisibleModal={setIsVisibleModal}
-        setReloadUsers={setReloadUsers}
+        setReloadSubjects={setReloadSubjects}
       />
     );
   };
@@ -124,41 +126,41 @@ function UsersActive(props) {
     <List
       className="users-active"
       itemLayout="horizontal"
-      dataSource={usersActive} //arreglo
-      renderItem={(user) => (
-        <UserActive
-          user={user}
-          editUser={editUser}
-          setReloadUsers={setReloadUsers}
+      dataSource={subjectsActive} //arreglo
+      renderItem={(subject) => (
+        <SubjectActive
+          subject={subject}
+          editSubject={editSubject}
+          setReloadSubjects={setReloadSubjects}
         />
       )}
     />
   );
 }
 
-function UserActive(props) {
-  const { user, editUser, setReloadUsers } = props;
+function SubjectActive(props) {
+  const { subject, editSubject, setReloadSubjects } = props;
   const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
-    if (user.avatar) {
-      getAvatar(user.avatar).then((response) => {
+    if (subject.avatar) {
+      getAvatar(subject.avatar).then((response) => {
         setAvatar(response);
       });
     } else {
       setAvatar(null);
     }
-  }, [user]);
+  }, [subject]);
 
-  const desactivateUser = () => {
+  const desactivateSubject = () => {
     const accesToken = getAccessToken();
 
-    activateUser(accesToken, user._id, false)
+    activateSubject(accesToken, subject._id, false)
       .then((response) => {
         notification["success"]({
           message: response,
         });
-        setReloadUsers(true);
+        setReloadSubjects(true);
       })
       .catch((err) => {
         notification["error"]({
@@ -172,17 +174,17 @@ function UserActive(props) {
 
     confirm({
       title: "Eliminando usuario",
-      content: `¿Estas seguro que quieres eliminar a ${user.email}?`,
+      content: `¿Estas seguro que quieres eliminar a ${subject.email}?`,
       okText: "Eliminar",
       okType: "danger",
       cancelText: "Cancelar",
       onOk() {
-        deleteUser(accesToken, user._id)
+        deletSubject(accesToken, subject._id)
           .then((response) => {
             notification["success"]({
               message: response,
             });
-            setReloadUsers(true);
+            setReloadSubjects(true);
           })
           .catch((err) => {
             notification["error"]({
@@ -196,67 +198,67 @@ function UserActive(props) {
   return (
     <List.Item
       actions={[
-        <Button type="primary" onClick={() => editUser(user)} style={{borderRadius: 15,}}>
+        <Button type="primary" onClick={() => editSubject(subject)} style={{borderRadius: 15,}}>
           <EditOutlined />
         </Button>,
-        <Button type="danger" onClick={desactivateUser} style={{borderRadius: 15,}}>
-          <UserSwitchOutlined />
+        <Button type="danger" onClick={desactivateSubject} style={{borderRadius: 15,}}>
+          <FolderOutlined />
         </Button>,
         <Button type="danger" onClick={showDeleteConfirm} style={{borderRadius: 15,}}>
-          <UserDeleteOutlined />
+          <DeleteOutlined />
         </Button>,
       ]}
     >
       <List.Item.Meta
         avatar={<Avatar src={avatar ? avatar : NoAvatar} />}
         title={`
-                ${user.name_user ? user.name_user : "..."} 
-                ${user.lastname ? user.lastname : "..."}
+                ${subject.academic_activity ? subject.academic_activity : "..."} 
+                ${subject.activity_code ? subject.activity_code : "..."}
             `}
-        description={user.email}
+        description={subject.department}
       />
     </List.Item>
   );
 }
 
-function UsersInactive(props) {
-  const { usersInactive, setReloadUsers } = props;
+function SubjectsInactive(props) {
+  const { subjectsInactive, setReloadSubjects } = props;
 
   return (
     <List
       className="users-active"
       itemLayout="horizontal"
-      dataSource={usersInactive}
-      renderItem={(user) => (
-        <UserInactive user={user} setReloadUsers={setReloadUsers} />
+      dataSource={subjectsInactive}
+      renderItem={(subject) => (
+        <SubjectInactive subject={subject} setReloadSubjects={setReloadSubjects} />
       )}
     />
   );
 }
 
-function UserInactive(props) {
-  const { user, setReloadUsers } = props;
+function SubjectInactive(props) {
+  const { subject, setReloadSubjects } = props;
   const [avatar, setAvatar] = useState(null);
 
   useEffect(() => {
-    if (user.avatar) {
-      getAvatar(user.avatar).then((response) => {
+    if (subject.avatar) {
+      getAvatar(subject.avatar).then((response) => {
         setAvatar(response);
       });
     } else {
       setAvatar(null);
     }
-  }, [user]);
+  }, [subject]);
 
-  const activateUserF = () => {
+  const activateSubjectF = () => {
     const accesToken = getAccessToken();
 
-    activateUser(accesToken, user._id, true)
+    activateSubject(accesToken, subject._id, true)
       .then((response) => {
         notification["success"]({
           message: response,
         });
-        setReloadUsers(true);
+        setReloadSubjects(true);
       })
       .catch((err) => {
         notification["error"]({
@@ -269,20 +271,20 @@ function UserInactive(props) {
     const accesToken = getAccessToken();
 
     confirm({
-      title: "Eliminando usuario",
-      content: `¿Estas seguro que quieres eliminar a ${user.email}?`,
+      title: "Eliminando Asignatura",
+      content: `¿Estas seguro que quieres eliminar a ${subject.academic_activity}?`,
       okText: "Eliminar",
       okType: "danger",
       cancelText: "Cancelar",
       onOk() {
-        deleteUser(accesToken, user._id)
+        deletSubject(accesToken, subject._id)
           .then((response) => {
-            console.log(user._id);
+            console.log(subject._id);
             notification["success"]({
               message: response,
             });
-            console.log(user._id);
-            setReloadUsers(true);
+            console.log(subject._id);
+            setReloadSubjects(true);
           })
           .catch((err) => {
             notification["error"]({
@@ -295,21 +297,21 @@ function UserInactive(props) {
   return (
     <List.Item
       actions={[
-        <Button type="primary" onClick={activateUserF} style={{borderRadius: 15,}}>
-          <UserSwitchOutlined />
+        <Button type="primary" onClick={activateSubjectF}>
+          <FolderOutlined />
         </Button>,
-        <Button type="danger" onClick={showDeleteConfirm} style={{borderRadius: 15,}}>
-          <UserDeleteOutlined />
+        <Button type="danger" onClick={showDeleteConfirm} className="botones">
+          <DeleteOutlined />
         </Button>,
       ]}
     >
       <List.Item.Meta
         avatar={<Avatar src={avatar ? avatar : NoAvatar} />}
         title={`
-                  ${user.name_user ? user.name_user : "..."} 
-                  ${user.lastname ? user.lastname : "..."}
+                  ${subject.academic_activity ? subject.academic_activity : "..."} 
+                  ${subject.activity_code ? subject.activity_code : "..."}
               `}
-        description={user.email}
+        description={subject.department}
       />
     </List.Item>
   );

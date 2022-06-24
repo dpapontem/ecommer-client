@@ -29,7 +29,8 @@ export default function EditUser(props) {
       });
     } else {
       const accesToken = getAccessToken();
-
+      console.log("Esta es la data envia para asignatura");
+      console.log(userData)
       signUpAdmin(accesToken, userData)
         .then((response) => {
           notification["success"]({

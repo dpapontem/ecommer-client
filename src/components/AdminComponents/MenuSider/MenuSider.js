@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation  } from "react-router-dom";
 import { Layout, Menu } from "antd";
-import { HomeOutlined, TeamOutlined } from "@ant-design/icons";
+import { HomeOutlined, TeamOutlined, FolderOutlined } from "@ant-design/icons";
 import "./MenuSider.scss";
 
 export const MenuSider = (props) => {
@@ -27,12 +27,12 @@ export const MenuSider = (props) => {
             <span className="nav-text">Usuarios</span>
           </Link>
         </Menu.Item>
-        {/* <Menu.Item key="/admin/subjects">
+         <Menu.Item key="/admin/subjects">
           <Link to={"/admin/subjects"}>
-            <TeamOutlined />
+            <FolderOutlined />
             <span className="nav-text">Asignaturas</span>
           </Link>
-        </Menu.Item> */}
+        </Menu.Item> 
       </Menu>
     </Sider>
   );

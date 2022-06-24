@@ -1,9 +1,9 @@
 import React from "react";
-
+import "./Admin.scss";
 export default function Admin() {
     return(
-        <div>
-        <h2>Imagenes de quemados</h2>
+        <div className="sign-in">
+        <h2></h2>
         </div>
     );
 }

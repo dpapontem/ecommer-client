@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Routes, Route } from "react-router-dom";
+
 import { Layout, Button } from "antd";
 import MenuTop from "../components/AdminComponents/MenuTop";
 import MenuSider from "../components/AdminComponents/MenuSider";
 import { GithubOutlined } from "@ant-design/icons";
-import SignIn from "../pages/Admin/SignIn";
+import SignIn from "../pages/Admin/SignIn/SignIn";
+import { getAccessToken, getRefreshToken } from "../api/auth";
 import useAuth from "../hooks/useAuth";
 
 import "./LayoutAdmin.scss";
@@ -13,9 +15,23 @@ export default function LayoutAdmin(props) {
   const [menuCollapsed, setMenuCollapsed] = useState(false);
   const { Header, Content, Footer } = Layout;
   const { children } = props;
-  const { user, isLoading } = useAuth();
-  /* Si no hay usuario y ya termino de cargar la página, no es un usuario logueado */
-  if (!user && !isLoading) {
+
+  const { user, isLoading} = useAuth();
+  const accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+  /* let navigate = useNavigate();
+
+   const user = null;
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user]);
+
+  if (user) { */
+
+  /*  Si no hay usuario y ya termino de cargar la pagina, no es un usuario logeado */
+  if(!user && !isLoading){
     return (
       <>
         <SignIn />
@@ -23,11 +39,11 @@ export default function LayoutAdmin(props) {
           <Route path="/admin/login" element={<SignIn />} />
         </Routes>
       </>
-    );
+    )
   }
 
-  /* Si user tiene el contenido del payload y ya termino de cargar la página */
-  if (user && !isLoading) {
+  /*  Si el user tiene el contenido del payload y ya termino de cargar la pagina */
+  if (user && !isLoading){
     return (
       <Layout>
         <MenuSider menuCollapsed={menuCollapsed} />
@@ -43,14 +59,15 @@ export default function LayoutAdmin(props) {
           </Header>
           <Content className="layout-admin__content">{children}</Content>
           <Footer className="layout-admin__footer">
-            <Button type="link" onClick={() => console.log("Github")}>
-              <GithubOutlined style={{ fontSize: "17px" }} /> Universidad
-              Autónoma de Manizales
-            </Button>
+            <a className="link" href="https://github.com/dpapontem"  target="_blank"><GithubOutlined style={{ fontSize: "17px" }}  /> DerlyAM</a>
+            
           </Footer>
         </Layout>
       </Layout>
     );
   }
   return null;
+  
 }
+/* }
+ */
