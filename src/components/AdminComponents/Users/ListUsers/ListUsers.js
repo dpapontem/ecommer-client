@@ -14,7 +14,7 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import NoAvatar from "../../../../assets/img/png/user.png";
-import { getAvatar, activateUser, deleteUser } from "../../../../api/user";
+import { getAvatar, activateUser, deleteUser,enviarMensaje } from "../../../../api/user";
 import { getAccessToken } from "../../../../api/auth";
 import EditUserForm from "../EditUser";
 import AddUserForm from "../AddUser";

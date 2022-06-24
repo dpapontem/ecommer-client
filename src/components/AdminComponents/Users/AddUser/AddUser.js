@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Select, Button, Row, Col, notification } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
-import { signUpAdmin } from "../../../../api/user";
+import { enviarMail, enviarMensaje, signUpAdmin } from "../../../../api/user";
 import { getAccessToken } from "../../../../api/auth";
 import "./AddUser.scss";
 
@@ -18,7 +18,9 @@ export default function EditUser(props) {
       !userData.role ||
       !userData.email ||
       !userData.password ||
-      !userData.repeatPassword
+      !userData.repeatPassword ||
+      !userData.celular
+      
     ) {
       notification["error"]({
         message: "Todos los campos son obligatorios.",
@@ -29,10 +31,12 @@ export default function EditUser(props) {
       });
     } else {
       const accesToken = getAccessToken();
-      console.log("Esta es la data envia para asignatura");
+      console.log("Esta es la data envia para usuarios");
       console.log(userData)
       signUpAdmin(accesToken, userData)
         .then((response) => {
+          enviarMensaje(userData.celular)
+          enviarMail(userData.email)
           notification["success"]({
             message: response,
           });
@@ -116,6 +120,7 @@ const AddForm = (props) => {
               <Option value="admin">Administrador</Option>
               <Option value="editor">Editor</Option>
               <Option value="reviwer">Revisor</Option>
+              <Option value="reviwer">coordinador de programa</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -148,6 +153,20 @@ const AddForm = (props) => {
             />
           </Form.Item>
         </Col>
+      </Row>
+
+      <Row gutter={24}>
+        <Col span={24}>
+          <Form.Item>
+            <Input
+              prefix={<UserAddOutlined />}
+              type="phone"
+              placeholder="Numero Celular"
+              
+            />
+          </Form.Item>
+        </Col>
+        
       </Row>
 
       <Form.Item>

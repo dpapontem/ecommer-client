@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Input,
   Switch,
   List,
   Button,
@@ -12,9 +13,10 @@ import {
   DeleteOutlined,
   FolderOutlined,
   FolderAddOutlined ,
+  SearchOutlined
 } from "@ant-design/icons";
-import NoAvatar from "../../../../assets/img/png/user.png";
-import { activateSubject, deletSubject } from "../../../../api/subject";
+import NoAvatar from "../../../../assets/img/png/pngwing_1.png";
+import { activateSubject, deletSubject, getVersionPiia } from "../../../../api/subject";
 import { getAccessToken } from "../../../../api/auth";
 import EditSubjectForm from "../EditSubject";
 import AddSubjectForm from "../AddSubject";
@@ -31,10 +33,11 @@ export default function ListSubjects(props) {
   const [modalTitle, setModalTitle] = useState("");
   const [modalContent, setModalContent] = useState(null);
 
+  const [inputValue, setInputValue] = useState("")
+
   const addSubjectModal = () => {
     setIsVisibleModal(true);
-    setModalTitle("Creando nueva asignatura");
-    console.log("Porque no funciona")
+    setModalTitle("Creando nueva asignatura");    
     setModalContent(
       <AddSubjectForm
         setIsVisibleModal={setIsVisibleModal}
@@ -49,9 +52,18 @@ export default function ListSubjects(props) {
         <div className="list-users__header-switch">
           <List.Item
             actions={[
+              <Input
+               placeholder="Filtrar version de PIIA"
+               prefix={<SearchOutlined />} 
+               allowClear
+               style={{borderRadius: 15,}}
+               onChange={(event) => console.log(getVersionPiia(event.target.value))}
+               />,
               <Button type="primary" onClick={addSubjectModal} style={{borderRadius: 15,}}>
                 <FolderAddOutlined  />
               </Button>,
+              
+              
             ]}
           >
             <List.Item.Meta

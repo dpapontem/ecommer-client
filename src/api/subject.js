@@ -117,14 +117,14 @@ export function deletSubject(token,subjectId){
 };
 
 // filtro por version
-export function getVersionPiia(token,version){
+export function getVersionPiia(version){
 
     const url = `${basePath}/${apiVersion}/getVersionPiia/${version}`;
     const params = {
         method: "GET",
         headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        //Authorization: token,
         },
     };
 
